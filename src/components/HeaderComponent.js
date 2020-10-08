@@ -15,11 +15,11 @@ class Header extends Component{
                     <Nav className="ml-auto" navbar>
                             <NavItem>
                                 <NavLink className = "nav-link" to = "/register">
-                                    <span className = "fa fa-signup fa-lg"></span> Register
+                                    <span className = "fa fa-user-plus fa-lg"></span> Register
                                 </NavLink>
                             
                                 <NavLink className = "nav-link" to = "/login">
-                                    <span className = "fa fa-signup fa-lg"></span> Login
+                                    <span className = "fa fa-sign-in fa-lg"></span> Login
                                 </NavLink>
                             </NavItem>
                     </Nav>

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
+import Select from "react-validation/build/select";
 import Header from './HeaderComponent';
 
 import {Jumbotron} from 'reactstrap';
@@ -57,6 +58,7 @@ const required = value => {
         this.onChangeUsername = this.onChangeUsername.bind(this);
         this.onChangeEmail = this.onChangeEmail.bind(this);
         this.onChangePassword = this.onChangePassword.bind(this);
+        this.onRoleChanged = this.onRoleChanged.bind(this);
     
 
        this.state = {
@@ -64,8 +66,14 @@ const required = value => {
         email: "",
         password: "",
         successful: false,
-        message: ""
+        message: "",
+        role:""
       }
+    }
+    onRoleChanged(e) {
+      this.setState({
+        role:e.target.value
+      })
     }
     onChangeUsername(e) {
         this.setState({
@@ -96,10 +104,12 @@ const required = value => {
         this.form.validateAll();
     
         if (this.checkBtn.context._errors.length === 0) {
+          
           AuthService.register(
             this.state.username,
             this.state.email,
-            this.state.password
+            this.state.password,
+            [this.state.role]
           ).then(
             response => {
               this.setState({
@@ -186,9 +196,24 @@ const required = value => {
                                 validations={[required, vpassword]}
                             />
                             </div>
+                            <div className="form-group">
+                            <label htmlFor="role">Select Role</label>
+                              <Select
+                                className="form-control"
+                                name="role"
+                                value = {this.state.role}
+                                onChange={this.onRoleChanged}
+                                validations={[required]}
+                              >
+                                <option value=''>Select Role</option>
+                                <option value='SERVICE_TECHNICIAN'>Service Technician</option>
+                                <option value='mod'>Service Manager</option>
+
+                              </Select>
+                            </div>
 
                             <div className="form-group">
-                            <button className="btn btn-primary btn-block">Sign Up</button>
+                            <button type="submit" className="btn btn-primary btn-block">Sign Up</button>
                             </div>
                         </div>
                         )}

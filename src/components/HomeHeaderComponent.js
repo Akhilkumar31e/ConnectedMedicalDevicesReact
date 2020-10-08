@@ -15,7 +15,8 @@ export default class HomeHeader extends Component {
             isLoading: false,
             showManagerBoard:false,
             showAdminBoard:false,
-            currentUser:undefined
+            currentUser:undefined,
+            showTechnician:false
         }
         this.toggleNav = this.toggleNav.bind(this);
         this.handleLogout = this.handleLogout.bind(this);
@@ -28,7 +29,8 @@ export default class HomeHeader extends Component {
             this.setState({
                 currentUser:user,
                 showManagerBoard: user.roles.includes("SERVICE_MANAGER"),
-                showAdminBoard: user.roles.includes("SYSTEM_ADMINISTRATOR")
+                showAdminBoard: user.roles.includes("SYSTEM_ADMINISTRATOR"),
+                showTechnician: user.roles.includes("SYSTEM_TECHNICIAN")
             })
         }
     }
@@ -46,7 +48,7 @@ export default class HomeHeader extends Component {
        
     }
     render() {
-        const {currentUser,showManagerBoard,showAdminBoard} = this.state;
+        const {currentUser,showManagerBoard,showAdminBoard,showTechnician} = this.state;
         return (
             <React.Fragment>
              {this.state.isLoggedOut && <Redirect to="/main" />}
@@ -62,16 +64,16 @@ export default class HomeHeader extends Component {
                         <Nav navbar>
                              {showManagerBoard && (<NavItem>
                                 <NavLink className = "nav-link" to = "/mod">
-                                    <span className = "fa fa-search fa-lg"></span> Manager Board
+                                    <span className = "fa fa-user fa-lg"></span> Manager
                                 </NavLink>
                             </NavItem>)}
                             {showAdminBoard && (<NavItem>
                                 <NavLink className = "nav-link" to = "/admin">
-                                    <span className = "fa fa-home fa-lg"></span> Admin Board
+                                    <span className = "fa fa-user fa-lg"></span> Admin
                                 </NavLink>
                             </NavItem>)}
 
-                            {currentUser&&(<NavItem>
+                            {showTechnician &&(<NavItem>
                                 <NavLink className = "nav-link" to = "/user">
                                     <span className = "fa fa-user fa-lg"></span> Technician
                                 </NavLink>
