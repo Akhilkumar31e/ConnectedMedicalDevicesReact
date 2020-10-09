@@ -10,6 +10,7 @@ import Login from './components/LoginComponent';
 import Footer from './components/FooterComponent';
 import Home from './components/HomeComponent';
 import Profile from './components/ProfileComponent';
+import Admin from './components/AdminComponent';
 
 function App() {
   const PrivateRoute= ({component: Component,...rest}) => {
@@ -29,6 +30,7 @@ function App() {
         <Route exact path="/register" component={Register} />
         <Route exact path="/login" component = {Login} />
         <PrivateRoute exact path="/profile" component = {Profile} />
+        <PrivateRoute exact path="/admin" component = {Admin} />
         <Redirect to="/main" />
       </Switch>
       <Footer />

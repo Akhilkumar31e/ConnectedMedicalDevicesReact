@@ -2,8 +2,7 @@ import React, { Component } from "react";
 
 import UserService from "../services/user.service";
 import HomeHeader from './HomeHeaderComponent';
-import AuthService from '../services/auth.service';
-import {Redirect} from 'react-router-dom';
+
 
 
 class Home extends Component {
