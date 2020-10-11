@@ -69,7 +69,7 @@
   transition: top 0.3s;
  }
  .row-display{
-  padding: 30px 30px 30px 30px;
+  padding: 10px 10px 10px 10px;
   text-align: left !important;
 }
 .job-style{
@@ -101,9 +101,26 @@
  
 }
 
+.pad-row{
+  padding: 30px 30px 30px 30px;
+  min-height: 100px;
+}
+
 
 .footer{
   background-color: #88abf7;
-  margin:0px auto;
+  
   padding: 20px 0px 20px 0px;
+  position: relative;
+left:0;
+bottom:0;
+right:0;
 }
+
+.main {
+  min-height: 100vh; /* will cover the 100% of viewport */
+  
+  display: block;
+  position: relative;
+  padding-bottom: 100px; /* height of your footer */
+ }

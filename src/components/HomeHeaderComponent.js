@@ -30,7 +30,7 @@ export default class HomeHeader extends Component {
                 currentUser:user,
                 showManagerBoard: user.roles.includes("SERVICE_MANAGER"),
                 showAdminBoard: user.roles.includes("SYSTEM_ADMINISTRATOR"),
-                showTechnician: user.roles.includes("SYSTEM_TECHNICIAN")
+                showTechnician: user.roles.includes("SERVICE_TECHNICIAN")
             })
         }
     }
@@ -48,7 +48,7 @@ export default class HomeHeader extends Component {
        
     }
     render() {
-        const {currentUser,showManagerBoard,showAdminBoard,showTechnician} = this.state;
+        const {showManagerBoard,showAdminBoard,showTechnician} = this.state;
         return (
             <React.Fragment>
              {this.state.isLoggedOut && <Redirect to="/main" />}
@@ -63,7 +63,7 @@ export default class HomeHeader extends Component {
                         <span className="mr-auto" />
                         <Nav navbar>
                              {showManagerBoard && (<NavItem>
-                                <NavLink className = "nav-link" to = "/mod">
+                                <NavLink className = "nav-link" to = "/manager">
                                     <span className = "fa fa-user fa-lg"></span> Manager
                                 </NavLink>
                             </NavItem>)}
@@ -74,7 +74,7 @@ export default class HomeHeader extends Component {
                             </NavItem>)}
 
                             {showTechnician &&(<NavItem>
-                                <NavLink className = "nav-link" to = "/user">
+                                <NavLink className = "nav-link" to = "/technician">
                                     <span className = "fa fa-user fa-lg"></span> Technician
                                 </NavLink>
                             </NavItem>)}

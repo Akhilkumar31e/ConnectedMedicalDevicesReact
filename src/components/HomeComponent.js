@@ -19,7 +19,7 @@ class Home extends Component {
         UserService.getPublicContent().then(
             response => {
                 this.setState({
-                    content: response.data
+                    content: response.data.deviecName
                 });
             },
             error => {
@@ -38,9 +38,11 @@ class Home extends Component {
         return(
             <React.Fragment>
                 <HomeHeader />
+                <div className="main">
                 <header className="jumbotron">
                     <h3>{this.state.content}</h3>
                 </header>
+                </div>
             </React.Fragment>
         )
     }

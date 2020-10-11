@@ -5,6 +5,17 @@ class DeviceService{
         return http.get('/device');
     }
 
+    getRepair(){
+        return http.get('/device/repair');
+    }
+
+    getService(){
+        return http.get('/device/service');
+    }
+    getReplace(){
+        return http.get('/device/replace');
+    }
+
     get(id){
         return http.get(`/device/${id}`);
     }
@@ -15,6 +26,10 @@ class DeviceService{
 
     update(id,data){
         return http.put(`/device/${id}`,data);
+    }
+
+    updateStatus(id,data){
+        return http.put(`/device/status/${id}`,data);
     }
 
 

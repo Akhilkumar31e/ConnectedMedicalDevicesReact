@@ -2,14 +2,14 @@ import React,{Component} from 'react';
 
 
 import { Navbar, NavbarBrand,Nav,NavItem} from 'reactstrap';
-import { NavLink, Redirect } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 
 class Header extends Component{
     render(){
         return(
             <Navbar dark >
-                    <NavbarBrand className="mr-auto" href="/React-First-Application/">
+                    <NavbarBrand className="mr-auto" href="/main">
                            CMD
                     </NavbarBrand>
                     <Nav className="ml-auto" navbar>

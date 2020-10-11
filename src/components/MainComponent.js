@@ -1,7 +1,5 @@
 import React,{Component} from 'react';
 import {Redirect } from 'react-router-dom';
-
-import Footer from './FooterComponent';
 import Header from './HeaderComponent';
 import Display from './DisplayComponent';
 import AuthService from '../services/auth.service';
