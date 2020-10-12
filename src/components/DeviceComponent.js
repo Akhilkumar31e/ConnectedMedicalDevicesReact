@@ -175,6 +175,25 @@ class Device extends Component{
                             {this.state.lastService ==null ? <p>NA</p> : <h4> {this.state.deviceInfo.lastService} </h4>}
                         </div>
                     </div>
+                    <div className="row pad-row">
+                    <div className="co1-12 col-sm-6">
+                        <h2 className="text-bold">Hospital Using the device</h2>
+                    </div>
+                    </div>
+                    <div className="row row-display row-edu">
+                        <div className="col-12 col-sm-4">
+                            <h4>Hospital Name : </h4>
+                        </div>
+                        <div className="col-12 col-sm-4">
+                            <h4> {this.state.deviceInfo.hospital.hospitalName} </h4>
+                        </div>
+                        <div className="col-12 col-sm-4">
+                        <Link  to = {`/hospital/${this.state.deviceInfo.hospital.hospitalID}`}>
+                                        <span className = "fa fa-external-link"> View Hospital Details</span> 
+                                    </Link>
+                        </div>
+                    </div>
+                    
                     <div className="row user-row">
                         <Button onClick={this.removeDevice} className="btn btn-sm btn-danger">Remove</Button>
                         <Button onClick={this.toggleDeviceModal} className="btn btn-sm btn-warning">Update</Button>
