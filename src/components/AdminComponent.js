@@ -53,6 +53,18 @@ class  RenderDevices extends Component{
                                     <Link  to = {`/device/${device.deviceID}`}>
                                         <span className = "fa fa-external-link"> View More</span> 
                                     </Link>
+                                    {device.deviceStatus.localeCompare('service')===0 && <h4>
+                                    <span class="badge badge-warning">Needs {device.deviceStatus}</span>
+                                    </h4>}
+                                    {device.deviceStatus.localeCompare('repair')===0 && <h4>
+                                    <span class="badge badge-danger">Needs {device.deviceStatus}</span>
+                                    </h4>}
+                                    {device.deviceStatus.localeCompare('replace')===0 && <h4>
+                                    <span class="badge badge-info">Needs to be {device.deviceStatus}d</span>
+                                    </h4>}
+                                    {device.deviceStatus.localeCompare('Working')===0 && <h4>
+                                    <span class="badge badge-success"> {device.deviceStatus}</span>
+                                    </h4>}
                                 </div>
                             </div>
                         </div>
@@ -81,13 +93,16 @@ class Admin extends Component{
             isModalOpen:false,
             devices : [],
             isLoading: true,
-            hospitals :[]
+            hospitals :[],
+            hModal : false
         }
         this.toggleDeviceModal=this.toggleDeviceModal.bind(this);
+        this.toggleHospitalModal = this.toggleHospitalModal.bind(this);
         this.handleAddDevice=this.handleAddDevice.bind(this);
         this.getDevices = this.getDevices.bind(this);
         this.getHospitals = this.getHospitals.bind(this);
         this.removeDevice = this.removeDevice.bind(this);
+        this.handleAddHospital = this.handleAddHospital.bind(this);
     }
 
     removeDevice(id){
@@ -137,13 +152,21 @@ class Admin extends Component{
         });
     }
 
+    toggleHospitalModal(){
+        this.setState({
+            hModal:!this.state.hModal
+        });
+    }
+
     handleAddDevice(values){
         var data = {
             deviceName:values.deviceName,
             deviceStatus: "Working",
             servicePeriod: values.servicePeriod,
-            batteryLevel: "100",
-            hospital : parseInt(values.hospital)
+            batteryLevel: "high",
+            hospital : parseInt(values.hospital),
+            assetNumber : values.assetNumber,
+            modelNumber : values.modelNumber
         }
         console.log(data);
 
@@ -152,6 +175,26 @@ class Admin extends Component{
            alert('Device Succesfully added');
            this.getDevices();
             this.toggleDeviceModal();
+            console.log(response.data);
+        })
+        .catch(e=> {
+            console.log(e);
+        });
+    }
+    handleAddHospital(values){
+        var data = {
+            hospitalName:values.hospitalName,
+            locality: values.locality,
+            city: values.city,
+            pincode:  values.pincode
+        }
+        console.log(data);
+
+        HospitalService.create(data)
+        .then(response => {
+           alert('Hospital Succesfully added');
+           
+            this.toggleHospitalModal();
             console.log(response.data);
         })
         .catch(e=> {
@@ -181,10 +224,13 @@ class Admin extends Component{
                     <div className="co1-12 col-sm-2">
                         <h2 className="text-bold">Devices</h2>
                     </div>
-                    <div className="col-12 col-sm-5 add-exp-button">
+                    <div className="col-12 col-sm-3 add-exp-button">
                         <Button onClick={this.toggleDeviceModal} className="btn bg-primary"><span className="fa fa-plus"></span> Add Device</Button>
                     </div>
-                    <div className="col-12 col-sm-5 add-exp-button">
+                    <div className="col-12 col-sm-3 add-exp-button">
+                        <Button onClick={this.toggleHospitalModal} className="btn bg-primary"><span className="fa fa-plus"></span> Add Hospital</Button>
+                    </div>
+                    <div className="col-12 col-sm-3 add-exp-button">
                         <Button  className="btn bg-primary"><Link className="bg-light" to="/allhospitals"> Show hospitals </Link></Button>
                     </div>
                     </div>
@@ -210,6 +256,52 @@ class Admin extends Component{
                                         <Errors
                                             className="text-danger"
                                             model=".deviceName"
+                                            show="touched"
+                                            messages={{
+                                                required: 'Required',
+                                                minLength: 'Must be greater than 3 characters',
+                                                maxLength: 'Must be 20 characters or less'
+                                            }}>
+                                        </Errors>
+                                    </Col>
+                                </Row>
+                                <Row className="form-group">
+                                    <Label htmlFor="assetNumber" md={3}>Asset Number</Label>
+                                    <Col md={9}>
+                                    <Control.text model=".assetNumber" 
+                                        id="assetNumber" 
+                                        placeholder="Asset Number" 
+                                        className="form-control" 
+                                        validators={{
+                                            required
+                                        }}
+                                        />
+                                        <Errors
+                                            className="text-danger"
+                                            model=".assetNumber"
+                                            show="touched"
+                                            messages={{
+                                                required: 'Required',
+                                                minLength: 'Must be greater than 3 characters',
+                                                maxLength: 'Must be 20 characters or less'
+                                            }}>
+                                        </Errors>
+                                    </Col>
+                                </Row>
+                                <Row className="form-group">
+                                    <Label htmlFor="modelNumber" md={3}>Model Number</Label>
+                                    <Col md={9}>
+                                    <Control.text model=".modelNumber" 
+                                        id="modelNumber" 
+                                        placeholder="Model Number" 
+                                        className="form-control" 
+                                        validators={{
+                                            required
+                                        }}
+                                        />
+                                        <Errors
+                                            className="text-danger"
+                                            model=".modelNumber"
                                             show="touched"
                                             messages={{
                                                 required: 'Required',
@@ -251,6 +343,115 @@ class Admin extends Component{
                                         </Control.select>
                                     </Col>
                                 </Row>
+                                <Row className="form-group">
+                                <Col md={{size:6,offset:3}}>
+                                    <Button type="submit" color="primary" block="true">
+                                        Add
+                                    </Button>
+                                </Col>
+                            </Row>
+                            </LocalForm>
+                        </ModalBody>
+                </Modal>
+                <Modal isOpen={this.state.hModal} toggle={this.toggleHospitalModal}>
+                        <ModalHeader toggle={this.toggleHospitalModal}>
+                            Add Hospital
+                        </ModalHeader>
+                        <ModalBody>
+                            <LocalForm onSubmit={(values) => this.handleAddHospital(values)}>
+                                <Row className="form-group">
+                                    <Label htmlFor="hospitalName" md={3}>Hospital Name</Label>
+                                    <Col md={9}>
+                                    <Control.text model=".hospitalName" 
+                                        id="hospitalName" 
+                                        placeholder="Enter Hospital Name" 
+                                        className="form-control" 
+                                        validators={{
+                                            required, minLength: minLength(3),maxLength: maxLength(20)
+                                        }}
+                                        />
+                                        <Errors
+                                            className="text-danger"
+                                            model=".hospitalName"
+                                            show="touched"
+                                            messages={{
+                                                required: 'Required',
+                                                minLength: 'Must be greater than 3 characters',
+                                                maxLength: 'Must be 20 characters or less'
+                                            }}>
+                                        </Errors>
+                                    </Col>
+                                </Row>
+                                <Row className="form-group">
+                                    <Label htmlFor="locality" md={3}>Hospital Locality</Label>
+                                    <Col md={9}>
+                                    <Control.text model=".locality" 
+                                        id="locality" 
+                                        placeholder="Enter Hospital Locality" 
+                                        className="form-control" 
+                                        validators={{
+                                            required, minLength: minLength(3),maxLength: maxLength(20)
+                                        }}
+                                        />
+                                        <Errors
+                                            className="text-danger"
+                                            model=".locality"
+                                            show="touched"
+                                            messages={{
+                                                required: 'Required',
+                                                minLength: 'Must be greater than 3 characters',
+                                                maxLength: 'Must be 20 characters or less'
+                                            }}>
+                                        </Errors>
+                                    </Col>
+                                </Row>
+                                <Row className="form-group">
+                                    <Label htmlFor="city" md={3}>Hospital City</Label>
+                                    <Col md={9}>
+                                    <Control.text model=".city" 
+                                        id="city" 
+                                        placeholder="Enter Hospital City" 
+                                        className="form-control" 
+                                        validators={{
+                                            required, minLength: minLength(3),maxLength: maxLength(20)
+                                        }}
+                                        />
+                                        <Errors
+                                            className="text-danger"
+                                            model=".city"
+                                            show="touched"
+                                            messages={{
+                                                required: 'Required',
+                                                minLength: 'Must be greater than 3 characters',
+                                                maxLength: 'Must be 20 characters or less'
+                                            }}>
+                                        </Errors>
+                                    </Col>
+                                </Row>
+                                <Row className="form-group">
+                                    <Label htmlFor="pincode" md={3}>Hospital Pincode</Label>
+                                    <Col md={9}>
+                                    <Control.text model=".pincode" 
+                                        id="pincode" 
+                                        placeholder="Enter Hospital Pincode" 
+                                        className="form-control" 
+                                        validators={{
+                                            required, minLength: minLength(3),maxLength: maxLength(20)
+                                        }}
+                                        />
+                                        <Errors
+                                            className="text-danger"
+                                            model=".pincode"
+                                            show="touched"
+                                            messages={{
+                                                required: 'Required',
+                                                minLength: 'Must be greater than 3 characters',
+                                                maxLength: 'Must be 20 characters or less'
+                                            }}>
+                                        </Errors>
+                                    </Col>
+                                </Row>
+                                
                                 <Row className="form-group">
                                 <Col md={{size:6,offset:3}}>
                                     <Button type="submit" color="primary" block="true">

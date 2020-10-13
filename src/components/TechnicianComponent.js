@@ -5,6 +5,7 @@ import classnames from 'classnames';
 import DeviceService from '../services/device.service';
 import Loading from './LoadingComponent';
 import {Link} from 'react-router-dom';
+import { Button} from 'reactstrap';
 
 class  RenderDevices extends Component{
     
@@ -37,6 +38,18 @@ class  RenderDevices extends Component{
                                     <Link  to = {`/techdevice/${device.deviceID}`}>
                                         <span className = "fa fa-external-link"> View More</span> 
                                     </Link>
+                                    {device.deviceStatus.localeCompare('service')===0 && <h4>
+                                    <span class="badge badge-warning">Needs {device.deviceStatus}</span>
+                                    </h4>}
+                                    {device.deviceStatus.localeCompare('repair')===0 && <h4>
+                                    <span class="badge badge-danger">Needs {device.deviceStatus}</span>
+                                    </h4>}
+                                    {device.deviceStatus.localeCompare('replace')===0 && <h4>
+                                    <span class="badge badge-info">Needs to be {device.deviceStatus}d</span>
+                                    </h4>}
+                                    {device.deviceStatus.localeCompare('Working')===0 && <h4>
+                                    <span class="badge badge-success"> {device.deviceStatus}</span>
+                                    </h4>}
                                 </div>
                             </div>
                         </div>
@@ -64,12 +77,33 @@ class Technician extends Component{
             isLoading:true,
             serviceDevices:[],
             repairDevices:[],
-            replaceDevices: []
+            replaceDevices: [],
+            devices : [],
+            lastUpdated :[]
         }
         this.toggleTab = this.toggleTab.bind(this);
         this.getService = this.getService.bind(this);
         this.getRepair = this.getRepair.bind(this);
         this.getReplace = this.getReplace.bind(this);
+        this.getDevices = this.getDevices.bind(this);
+        this.getLastUpdated = this.getLastUpdated.bind(this);
+        this.refresh = this.refresh.bind(this);
+    }
+    refresh(){
+        this.getLastUpdated();
+    }
+    getLastUpdated(){
+        DeviceService.getLastUpdated()
+        .then(response => {
+            this.setState({
+                lastUpdated: response.data,
+                isLoading: false
+            });
+            console.log(response.data);
+        })
+        .catch(e => {
+            console.log(e);
+        });
     }
 
     getService(){
@@ -84,6 +118,23 @@ class Technician extends Component{
         .catch(e => {
             this.setState({
                 serviceDevices: [],
+                isLoading: false
+            });
+            console.log(e);
+        });
+    }
+    getDevices(){
+        DeviceService.getAll()
+        .then(response => {
+            this.setState({
+                devices: response.data,
+                isLoading: false
+            });
+            console.log(response.data);
+        })
+        .catch(e => {
+            this.setState({
+                devices: [],
                 isLoading: false
             });
             console.log(e);
@@ -139,6 +190,8 @@ class Technician extends Component{
         this.getService();
         this.getReplace();
         this.getRepair();
+        this.getDevices();
+        this.getLastUpdated();
     }
 
     render(){
@@ -174,6 +227,22 @@ class Technician extends Component{
                                     <h4>Replace</h4>
                                 </NavLink>
                                 </NavItem>
+                                <NavItem>
+                                <NavLink
+                                    className={classnames({ active: this.state.activeTab === '4' })}
+                                    onClick={() => { this.toggleTab('4'); }}
+                                >
+                                    <h4>All Devices</h4>
+                                </NavLink>
+                                </NavItem>
+                                <NavItem>
+                                <NavLink
+                                    className={classnames({ active: this.state.activeTab === '4' })}
+                                    onClick={() => { this.toggleTab('5'); }}
+                                >
+                                    <h4>Recently Updated</h4>
+                                </NavLink>
+                                </NavItem>
                             </Nav>
                         </div>
                     </div>
@@ -203,6 +272,27 @@ class Technician extends Component{
                             </div>
                             </div>
                             <RenderDevices isLoading={this.state.isLoading} devices={this.state.replaceDevices} />
+                            
+                        </TabPane>
+                        <TabPane tabId="4">
+                        <div className="row pad-row">
+                            <div className="co1-12 col-sm-6">
+                                <h3>All Devices</h3>
+                            </div>
+                            </div>
+                            <RenderDevices isLoading={this.state.isLoading} devices={this.state.devices} />
+                            
+                        </TabPane>
+                        <TabPane tabId="5">
+                        <div className="row pad-row">
+                            <div className="co1-12 col-sm-6">
+                                <h3>Recently Updated</h3>
+                            </div>
+                            <div className="col-12 col-sm-6 add-exp-button">
+                        <Button onClick={this.refresh} className="btn bg-primary"><h3><span className="fa fa-refresh fa-light"></span></h3></Button>
+                    </div>
+                            </div>
+                            <RenderDevices isLoading={this.state.isLoading} devices={this.state.lastUpdated} />
                             
                         </TabPane>
                     </TabContent>

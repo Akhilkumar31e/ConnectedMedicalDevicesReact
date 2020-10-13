@@ -5,6 +5,10 @@ class DeviceService{
         return http.get('/device');
     }
 
+    getLastUpdated(){
+        return http.get('/device/recentlyUpdated')
+    }
+
     getRepair(){
         return http.get('/device/repair');
     }
@@ -40,6 +44,8 @@ class DeviceService{
       deleteAll() {
         return http.delete(`/device`);
       }
+
+
 }
 
 export default new DeviceService();

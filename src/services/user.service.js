@@ -20,6 +20,10 @@ class UserService {
       getAmin() {
         return axios.get(API_URL + 'admin', { headers: authHeader() });
       }
+
+      getUsersList() {
+        return axios.get(API_URL + 'userList', {headers: authHeader()});
+      }
     }
     
     export default new UserService();

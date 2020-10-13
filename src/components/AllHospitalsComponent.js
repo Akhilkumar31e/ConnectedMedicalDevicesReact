@@ -49,8 +49,8 @@ class  AllHospitals extends Component{
                         <div className="container">
                             <div className="row user-row">
                                 <div className="col-12 col-sm-6">
-                                    <h5>{hospital.hospitalName}</h5>
-                                    <h3>{hospital.city}</h3>
+                                    <h3>{hospital.hospitalName}</h3>
+                                    <h5>{hospital.city}</h5>
                                 </div>
                                 <div className="col-12 col-sm-6">
                                     {/*<Button onClick={() => this.handelRemoveButton(device.deviceID)} className="btn btn-sm btn-danger">Remove</Button>  */}
