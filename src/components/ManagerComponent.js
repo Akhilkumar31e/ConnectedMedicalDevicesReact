@@ -33,7 +33,8 @@ class  RenderDevices extends Component{
                                 <div className="col-12 col-sm-6">
                                     <h5>{device.deviceName}</h5>
                                     <p>Issued Date : {new Intl.DateTimeFormat('en-US', { year: 'numeric',month: 'short',day: '2-digit'}).format(new Date(Date.parse(device.receivedDate)))} </p>
-                                    {device.hospital ? <h5>Hospital using :{device.hospital.hospitalName}</h5> : <p>No hospital</p>}
+                                    {device.hospital ? <h5>Hospital using : {device.hospital.hospitalName}</h5> : <p>No hospital</p>}
+                                    {device.lastUpdated ==null ? <p>Last Updated : NA</p> :<h6>Last Updated : {new Intl.DateTimeFormat('en-US', { year: 'numeric',month: 'short',day: '2-digit',hour: 'numeric', minute: 'numeric', second: 'numeric'}).format(new Date(Date.parse(device.lastUpdated)))} </h6>}
                                 </div>
                                 <div className="col-12 col-sm-6">
                                     {/*<Button onClick={() => this.handelRemoveButton(device.deviceID)} className="btn btn-sm btn-danger">Remove</Button>  */}

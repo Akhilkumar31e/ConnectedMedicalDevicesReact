@@ -25,7 +25,7 @@ class TechDevice extends Component{
         var data = {
             
             deviceStatus: 'Working', 
-            batteryLevel: '100',
+            batteryLevel: 'high',
             operatingTime:0
         }
         console.log(data);
@@ -107,10 +107,45 @@ class TechDevice extends Component{
                     </div>
                     <div className="row row-display row-edu">
                         <div className="col-12 col-sm-4">
+                            <h4>Model Number: </h4>
+                        </div>
+                        <div className="col-12 col-sm-6">
+                            <h4> {this.state.deviceInfo.modelNumber} </h4>
+                        </div>
+                    </div>
+                    <div className="row row-display row-edu">
+                        <div className="col-12 col-sm-4">
+                            <h4>Asset Number : </h4>
+                        </div>
+                        <div className="col-12 col-sm-6">
+                            <h4> {this.state.deviceInfo.assetNumber} </h4>
+                        </div>
+                    </div>
+                    <div className="row row-display row-edu">
+                        <div className="col-12 col-sm-4">
+                            <h4>Operating Time: </h4>
+                        </div>
+                        <div className="col-12 col-sm-6">
+                            <h4> {this.state.deviceInfo.operatingTime} hours</h4>
+                        </div>
+                    </div>
+                    <div className="row row-display row-edu">
+                        <div className="col-12 col-sm-4">
                             <h4>Device Status :</h4>
                         </div>
                         <div className="col-12 col-sm-6">
-                            <h4> {this.state.deviceInfo.deviceStatus} </h4>
+                        {this.state.deviceInfo.deviceStatus.localeCompare('service')===0 && <h4>
+                                    <span class="badge badge-warning">Needs {this.state.deviceInfo.deviceStatus}</span>
+                                    </h4>}
+                                    {this.state.deviceInfo.deviceStatus.localeCompare('repair')===0 && <h4>
+                                    <span class="badge badge-danger">Needs {this.state.deviceInfo.deviceStatus}</span>
+                                    </h4>}
+                                    {this.state.deviceInfo.deviceStatus.localeCompare('replace')===0 && <h4>
+                                    <span class="badge badge-info">Needs to be {this.state.deviceInfo.deviceStatus}d</span>
+                                    </h4>}
+                                    {this.state.deviceInfo.deviceStatus.localeCompare('Working')===0 && <h4>
+                                    <span class="badge badge-success"> {this.state.deviceInfo.deviceStatus}</span>
+                                    </h4>}
                         </div>
                     </div>
                     <div className="row row-display row-edu">
@@ -118,7 +153,7 @@ class TechDevice extends Component{
                             <h4>Service Period : </h4>
                         </div>
                         <div className="col-12 col-sm-6">
-                            <h4> {this.state.deviceInfo.servicePeriod} </h4>
+                            <h4> {this.state.deviceInfo.servicePeriod} months</h4>
                         </div>
                     </div>
                     <div className="row row-display row-edu">
@@ -134,7 +169,15 @@ class TechDevice extends Component{
                             <h4>Battery Level :</h4>
                         </div>
                         <div className="col-12 col-sm-6">
-                            <h4><span className="badge badge-pill badge-success">{this.state.deviceInfo.batteryLevel}% </span></h4>
+                        {this.state.deviceInfo.batteryLevel.localeCompare('high')===0 &&<h4>
+                            <span className="badge badge-pill badge-success">{this.state.deviceInfo.batteryLevel} </span>
+                            </h4>}
+                            {this.state.deviceInfo.batteryLevel.localeCompare('moderate')===0 &&<h4>
+                            <span className="badge badge-pill badge-warning">{this.state.deviceInfo.batteryLevel} </span>
+                            </h4>}
+                            {this.state.deviceInfo.batteryLevel.localeCompare('low')===0 &&<h4>
+                            <span className="badge badge-pill badge-danger">{this.state.deviceInfo.batteryLevel} </span>
+                            </h4>}
                         </div>
                     </div>
                     <div className="row row-display row-edu">
@@ -142,7 +185,7 @@ class TechDevice extends Component{
                             <h4>Last Updated :</h4>
                         </div>
                         <div className="col-12 col-sm-6">
-                            {this.state.deviceInfo.lastUpdated ==null ? <p>NA</p> :<h4> {new Intl.DateTimeFormat('en-US', { year: 'numeric',month: 'short',day: '2-digit'}).format(new Date(Date.parse(this.state.deviceInfo.lastUpdated)))} </h4>}
+                        {this.state.deviceInfo.lastUpdated ==null ? <p>NA</p> :<h4> {new Intl.DateTimeFormat('en-US', { year: 'numeric',month: 'short',day: '2-digit',hour: 'numeric', minute: 'numeric', second: 'numeric'}).format(new Date(Date.parse(this.state.deviceInfo.lastUpdated)))} </h4>}
                         </div>
                     </div>
                     <div className="row row-display row-edu">

@@ -30,7 +30,8 @@ class Device extends Component{
             deviceStatus: values.status,
             servicePeriod: values.servicePeriod,
             batteryLevel: this.state.deviceInfo.batteryLevel,
-            hospital : this.state.deviceInfo.hospital.hospitalID
+            hospital : this.state.deviceInfo.hospital.hospitalID,
+            operatingTime : 0
         }
         console.log(data);
 
@@ -145,6 +146,14 @@ class Device extends Component{
                     </div>
                     <div className="row row-display row-edu">
                         <div className="col-12 col-sm-4">
+                            <h4>Operating Time: </h4>
+                        </div>
+                        <div className="col-12 col-sm-6">
+                            <h4> {this.state.deviceInfo.operatingTime} hours</h4>
+                        </div>
+                    </div>
+                    <div className="row row-display row-edu">
+                        <div className="col-12 col-sm-4">
                             <h4>Device Status :</h4>
                         </div>
                         <div className="col-12 col-sm-6">
@@ -175,7 +184,7 @@ class Device extends Component{
                             <h4>Issued Date :</h4>
                         </div>
                         <div className="col-12 col-sm-6">
-                            <h4>{new Intl.DateTimeFormat('en-US', { year: 'numeric',month: 'short',day: '2-digit'}).format(new Date(Date.parse(this.state.deviceInfo.receivedDate)))}  </h4>
+                            <h4>{new Intl.DateTimeFormat('en-US', { year: 'numeric',month: 'short',day: '2-digit',hour: 'numeric', minute: 'numeric', second: 'numeric'}).format(new Date(Date.parse(this.state.deviceInfo.receivedDate)))}  </h4>
                         </div>
                     </div>
                     <div className="row row-display row-edu">
@@ -183,7 +192,15 @@ class Device extends Component{
                             <h4>Battery Level :</h4>
                         </div>
                         <div className="col-12 col-sm-6">
-                            <h4><span className="badge badge-pill badge-success">{this.state.deviceInfo.batteryLevel} </span></h4>
+                            {this.state.deviceInfo.batteryLevel.localeCompare('high')===0 &&<h4>
+                            <span className="badge badge-pill badge-success">{this.state.deviceInfo.batteryLevel} </span>
+                            </h4>}
+                            {this.state.deviceInfo.batteryLevel.localeCompare('moderate')===0 &&<h4>
+                            <span className="badge badge-pill badge-warning">{this.state.deviceInfo.batteryLevel} </span>
+                            </h4>}
+                            {this.state.deviceInfo.batteryLevel.localeCompare('low')===0 &&<h4>
+                            <span className="badge badge-pill badge-danger">{this.state.deviceInfo.batteryLevel} </span>
+                            </h4>}
                         </div>
                     </div>
                     <div className="row row-display row-edu">
@@ -191,7 +208,7 @@ class Device extends Component{
                             <h4>Last Updated :</h4>
                         </div>
                         <div className="col-12 col-sm-6">
-                            {this.state.deviceInfo.lastUpdated ==null ? <p>NA</p> :<h4> {new Intl.DateTimeFormat('en-US', { year: 'numeric',month: 'short',day: '2-digit'}).format(new Date(Date.parse(this.state.deviceInfo.lastUpdated)))} </h4>}
+                            {this.state.deviceInfo.lastUpdated ==null ? <p>NA</p> :<h4> {new Intl.DateTimeFormat('en-US', { year: 'numeric',month: 'short',day: '2-digit',hour: 'numeric', minute: 'numeric', second: 'numeric'}).format(new Date(Date.parse(this.state.deviceInfo.lastUpdated)))} </h4>}
                         </div>
                     </div>
                     <div className="row row-display row-edu">

@@ -18,6 +18,7 @@ import Manager from './components/ManagerComponent';
 import Hospital from './components/HospitalComponent';
 import MDevice from './components/MDeviceComponent';
 import AllHospitals from './components/AllHospitalsComponent';
+import AuthService from './services/auth.service';
 
 function App() {
   const PrivateRoute= ({component: Component,...rest}) => {
@@ -28,6 +29,26 @@ function App() {
         : <Redirect  to="/login" />
     )} />
     )
+}
+const AdminRoute= ({component: Component,...rest}) => {
+  const user= AuthService.getCurrentUser();
+  return(
+  <Route {...rest} render = {(props) => (
+      (user!=null &&  user.roles.includes("SYSTEM_ADMINISTRATOR"))
+      ? <Component {...props} />
+      : <Redirect  to="/login" />
+  )} />
+  )
+}
+const ManagerRoute= ({component: Component,...rest}) => {
+  const user= AuthService.getCurrentUser();
+  return(
+  <Route {...rest} render = {(props) => (
+      (user!=null &&  (user.roles.includes("SYSTEM_ADMINISTRATOR")||user.roles.includes("SERVICE_MANAGER")))
+      ? <Component {...props} />
+      : <Redirect  to="/login" />
+  )} />
+  )
 }
 const SelectedDevice = ({match}) => {
   return(
@@ -57,13 +78,13 @@ const SelectedHospital = ({match}) => {
         <Route exact path="/register" component={Register} />
         <Route exact path="/login" component = {Login} />
         <PrivateRoute exact path="/profile" component = {Profile} />
-        <PrivateRoute exact path="/admin" component = {Admin} />
-        <PrivateRoute  path="/device/:deviceID" component={SelectedDevice} />
+        <AdminRoute exact path="/admin" component = {Admin} />
+        <AdminRoute  path="/device/:deviceID" component={SelectedDevice} />
         <PrivateRoute  path="/techdevice/:deviceID" component={SelectedTechDevice} />
-        <PrivateRoute  path="/mdevice/:deviceID" component={SelectedMDevice} />
+        <ManagerRoute  path="/mdevice/:deviceID" component={SelectedMDevice} />
         <PrivateRoute  exact path="/technician" component = {Technician} />
-        <PrivateRoute  exact path="/allhospitals" component = {AllHospitals} />
-        <PrivateRoute exact path="/manager" component = {Manager} />
+        <ManagerRoute  exact path="/allhospitals" component = {AllHospitals} />
+        <ManagerRoute exact path="/manager" component = {Manager} />
         <PrivateRoute exact path="/hospital/:hospitalID" component = {SelectedHospital} />
         <Redirect to="/main" />
       </Switch>
